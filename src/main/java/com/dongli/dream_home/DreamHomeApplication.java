@@ -10,5 +10,4 @@ public class DreamHomeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DreamHomeApplication.class, args);
 	}
-
 }

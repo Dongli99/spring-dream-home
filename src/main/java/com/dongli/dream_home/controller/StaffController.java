@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
-@RequestMapping("/")
-public class TestController {
+@RequestMapping("/api")
+public class StaffController {
     @GetMapping
     public String getMethodName() {
         return "Welcome";
