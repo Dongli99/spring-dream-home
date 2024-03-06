@@ -1,4 +1,4 @@
-package com.dongli.dream_home.entity;
+package com.dongli.dream_home.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
