@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class StaffTest {
 
     Staff staffNoPara = new Staff();
-    Staff staffAllPara = new Staff(null, "Dongli", "Liu", "Manager", "M",
+    Staff staffAllPara = new Staff("SW50", "Dongli", "Liu", "Manager", "M",
             LocalDate.of(1990, 6, 16), 50000, "Branch1",
             "123456789", "9876543210", "john.doe@example.com");
 
@@ -21,13 +21,13 @@ public class StaffTest {
 
     @Test
     void testBasicFieldsCanBeSet() {
-        assertThat(staffAllPara.getFName()).isEqualTo("Dongli");
-        staffAllPara.setFName("George");
-        assertThat(staffAllPara.getFName()).isEqualTo("George");
+        assertThat(staffAllPara.getFname()).isEqualTo("Dongli");
+        staffAllPara.setFname("George");
+        assertThat(staffAllPara.getFname()).isEqualTo("George");
 
-        assertThat(staffAllPara.getLName()).isEqualTo("Liu");
-        staffAllPara.setLName("Smith");
-        assertThat(staffAllPara.getLName()).isEqualTo("Smith");
+        assertThat(staffAllPara.getLname()).isEqualTo("Liu");
+        staffAllPara.setLname("Smith");
+        assertThat(staffAllPara.getLname()).isEqualTo("Smith");
 
         assertThat(staffAllPara.getPosition()).isEqualTo("Manager");
         staffAllPara.setPosition("Supervisor");

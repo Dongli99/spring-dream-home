@@ -1,6 +1,5 @@
 package com.dongli.dream_home.service;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.dongli.dream_home.dto.StaffRequest;
@@ -19,19 +18,20 @@ public class StaffService {
 
     public void createStaff(StaffRequest staffRequest) {
         Staff staff = Staff.builder()
-                .staffNo(staffRequest.getStaffNo())
-                .fName(staffRequest.getFName())
-                .lName(staffRequest.getLName())
+                .staffno(staffRequest.getStaffno())
+                .fname(staffRequest.getFname())
+                .lname(staffRequest.getLname())
                 .position(staffRequest.getPosition())
                 .sex(staffRequest.getSex())
                 .dob(staffRequest.getDob())
                 .salary(staffRequest.getSalary())
-                .branchNo(staffRequest.getBranchNo())
+                .branchno(staffRequest.getBranchno())
                 .telephone(staffRequest.getTelephone())
                 .mobile(staffRequest.getMobile())
                 .email(staffRequest.getEmail())
                 .build();
+        staff.setStaffno(staffRequest.getStaffno());
         staffRepository.save(staff);
-        log.info("Staff {} is saved.", staff.getStaffNo());
+        log.info("Staff {} is saved.", staff.getStaffno());
     }
 }

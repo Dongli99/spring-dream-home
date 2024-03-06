@@ -28,14 +28,14 @@ public class StaffServiceTest {
     public void testCreateStaff() {
         // Given
         StaffRequest staffRequest = new StaffRequest();
-        staffRequest.setStaffNo("S123");
-        staffRequest.setFName("John");
-        staffRequest.setLName("Doe");
+        staffRequest.setStaffno("S123");
+        staffRequest.setFname("John");
+        staffRequest.setLname("Doe");
         staffRequest.setPosition("Manager");
         staffRequest.setSex("Male");
         staffRequest.setDob(LocalDate.of(1990, 1, 1));
         staffRequest.setSalary(50000);
-        staffRequest.setBranchNo("B001");
+        staffRequest.setBranchno("B001");
         staffRequest.setTelephone("1234567890");
         staffRequest.setMobile("9876543210");
         staffRequest.setEmail("john.doe@example.com");

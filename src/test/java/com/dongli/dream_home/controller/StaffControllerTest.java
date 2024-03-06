@@ -39,9 +39,9 @@ class StaffControllerTest {
     void testCreateStaff() throws Exception {
         // Given
         StaffRequest staffRequest = new StaffRequest();
-        staffRequest.setStaffNo("S001");
-        staffRequest.setFName("John");
-        staffRequest.setLName("Doe");
+        staffRequest.setStaffno("S001");
+        staffRequest.setFname("John");
+        staffRequest.setLname("Doe");
         // Set other properties as needed
 
         // When
