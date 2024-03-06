@@ -39,9 +39,9 @@ class StaffControllerTest {
     void testCreateStaff() throws Exception {
         // Given
         StaffRequest staffRequest = new StaffRequest();
-        staffRequest.setStaffno("S001");
-        staffRequest.setFname("John");
-        staffRequest.setLname("Doe");
+        staffRequest.setStaffNo("S001");
+        staffRequest.setFName("John");
+        staffRequest.setLName("Doe");
         // Set other properties as needed
 
         // When
@@ -51,7 +51,7 @@ class StaffControllerTest {
                 .andExpect(status().isCreated());
 
         // Then
-        verify(staffService).createStaff(any(StaffRequest.class));
+        verify(staffService).createStaffUsingDefault(any(StaffRequest.class));
     }
 
     // Helper method to convert objects to JSON string

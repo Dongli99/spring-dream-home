@@ -21,13 +21,13 @@ public class StaffTest {
 
     @Test
     void testBasicFieldsCanBeSet() {
-        assertThat(staffAllPara.getFname()).isEqualTo("Dongli");
-        staffAllPara.setFname("George");
-        assertThat(staffAllPara.getFname()).isEqualTo("George");
+        assertThat(staffAllPara.getFName()).isEqualTo("Dongli");
+        staffAllPara.setFName("George");
+        assertThat(staffAllPara.getFName()).isEqualTo("George");
 
-        assertThat(staffAllPara.getLname()).isEqualTo("Liu");
-        staffAllPara.setLname("Smith");
-        assertThat(staffAllPara.getLname()).isEqualTo("Smith");
+        assertThat(staffAllPara.getLName()).isEqualTo("Liu");
+        staffAllPara.setLName("Smith");
+        assertThat(staffAllPara.getLName()).isEqualTo("Smith");
 
         assertThat(staffAllPara.getPosition()).isEqualTo("Manager");
         staffAllPara.setPosition("Supervisor");

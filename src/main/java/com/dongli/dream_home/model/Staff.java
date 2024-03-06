@@ -19,21 +19,23 @@ import lombok.NoArgsConstructor;
 @Table(name = "dh_staff")
 public class Staff {
     @Id
-    @Column(length = 50)
-    private String staffno;
-    private String fname;
-    private String lname;
+    @Column(name = "staffno")
+    private String staffNo;
+
+    @Column(name = "fname")
+    private String fName;
+
+    @Column(name = "lname")
+    private String lName;
+
     private String position;
     private String sex;
     private LocalDate dob;
     private int salary;
-    private String branchno;
+
+    @Column(name = "branchno")
+    private String branchNo;
     private String telephone;
     private String mobile;
     private String email;
-
-    // Constructor that initializes the identifier field
-    public Staff(String staffno) {
-        this.staffno = staffno;
-    }
 }

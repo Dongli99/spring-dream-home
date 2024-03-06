@@ -3,14 +3,14 @@ POST http://localhost:8080/api/staff
 Content-Type: application/json
 
 {
-    "staffno": "S123",
+    "staffNo": "S125",
     "fname": "John",
     "lname": "Doe",
     "position": "Manager",
     "sex": "Male",
-    "dob": "1990-01-01",
+    "dob": "1990-01-10",
     "salary": 50000,
-    "branchno": "B005",
+    "branchNo": "B003",
     "telephone": "1234567890",
     "mobile": "9876543210",
     "email": "john.doe@example.com"
