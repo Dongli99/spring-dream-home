@@ -2,6 +2,7 @@ package com.dongli.dream_home.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
@@ -40,10 +41,16 @@ public class StaffServiceTest {
         staffRequest.setMobile("9876543210");
         staffRequest.setEmail("john.doe@example.com");
 
+        // Mock the behavior of staffRepository.hireStaff() to return a Staff object
+        Staff savedStaff = new Staff("S123", "John", "Doe", "Manager", "Male",
+                LocalDate.of(1990, 1, 1), 50000, "B001",
+                "1234567890", "9876543210", "john.doe@example.com");
+        when(staffRepository.hireStaff(any(Staff.class))).thenReturn(savedStaff);
+
         // When
-        staffService.createStaffUsingDefault(staffRequest);
+        staffService.createStaffUsingProcedure(staffRequest);
 
         // Then
-        verify(staffRepository).save(any(Staff.class));
+        verify(staffRepository).hireStaff(any(Staff.class));
     }
 }

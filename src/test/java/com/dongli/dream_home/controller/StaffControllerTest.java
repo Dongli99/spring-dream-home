@@ -51,7 +51,7 @@ class StaffControllerTest {
                 .andExpect(status().isCreated());
 
         // Then
-        verify(staffService).createStaffUsingDefault(any(StaffRequest.class));
+        verify(staffService).createStaffUsingProcedure(any(StaffRequest.class));
     }
 
     // Helper method to convert objects to JSON string

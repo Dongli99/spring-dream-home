@@ -7,5 +7,5 @@ import com.dongli.dream_home.model.Staff;
 
 public interface StaffRepository extends JpaRepository<Staff, String> {
     @Procedure(name = "Staff_hire_sp")
-    void hireStaff(Staff staff);
+    Staff hireStaff(Staff staff);
 }

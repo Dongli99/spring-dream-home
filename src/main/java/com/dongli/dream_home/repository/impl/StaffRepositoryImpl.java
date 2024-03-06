@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class StaffRepositoryImpl {
     private final EntityManager entityManager;
 
-    public void hireStaff(Staff staff) {
+    public Staff hireStaff(Staff staff) {
         StoredProcedureQuery storedProcedure = entityManager
                 .createStoredProcedureQuery("Staff_hire_sp")
                 .registerStoredProcedureParameter("p_staffno", String.class, ParameterMode.IN)
@@ -41,5 +41,6 @@ public class StaffRepositoryImpl {
                 .setParameter("p_email", staff.getEmail());
 
         storedProcedure.execute();
+        return entityManager.find(Staff.class, staff.getStaffNo());
     }
 }
