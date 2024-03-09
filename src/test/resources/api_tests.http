@@ -3,7 +3,7 @@ POST http://localhost:8080/api/staff
 Content-Type: application/json
 
 {
-    "staffNo": "S125",
+    "staffNo": "S128",
     "fname": "John",
     "lname": "Doe",
     "position": "Manager",

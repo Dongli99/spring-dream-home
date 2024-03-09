@@ -2,6 +2,8 @@ package com.dongli.dream_home.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -30,6 +32,8 @@ public class Staff {
 
     private String position;
     private String sex;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
     private int salary;
 

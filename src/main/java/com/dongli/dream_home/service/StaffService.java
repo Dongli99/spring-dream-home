@@ -1,6 +1,7 @@
 package com.dongli.dream_home.service;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -19,18 +20,16 @@ public class StaffService {
 
     private final StaffRepository staffRepository;
 
-    public void createStaffUsingDefault(StaffRequest staffRequest) {
-        Staff staff = mapToStaff(staffRequest);
-        Staff savedStaff = staffRepository.save(staff);
+    public StaffResponse createStaffUsingProcedure(StaffRequest staffRequest) {
+        Staff savedStaff = staffRepository.hireStaff(mapToStaff(staffRequest));
         StaffResponse staffResponse = mapToResponse(savedStaff);
         log.info("Staff {} saved.", staffResponse.getStaffNo());
+        return staffResponse;
     }
 
-    public void createStaffUsingProcedure(StaffRequest staffRequest) {
-        Staff staff = mapToStaff(staffRequest);
-        Staff savedStaff = staffRepository.hireStaff(staff);
-        StaffResponse staffResponse = mapToResponse(savedStaff);
-        log.info("Staff {} saved.", staffResponse.getStaffNo());
+    public List<StaffResponse> getAllStaffs() {
+        List<Staff> staffs = staffRepository.findAll();
+        return staffs.stream().map(this::mapToResponse).toList();
     }
 
     private Staff mapToStaff(StaffRequest staffRequest) {
@@ -64,5 +63,4 @@ public class StaffService {
                 .email(staff.getEmail())
                 .build();
     }
-
 }
