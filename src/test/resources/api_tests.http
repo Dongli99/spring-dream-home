@@ -37,9 +37,10 @@ GET http://localhost:8080/api/staff/SL415555
 ### DELETE A Staff By ID With No Constraint
 # Expected response
 # HTTP/1.1 204 NO_CONTENT, or 404 if staff not exists
+# Run POST http://localhost:8080/api/staff test to ensure 204 NO_CONTENT
 DELETE http://localhost:8080/api/staff/S128
 
 ### DELETE A Staff By ID With Foreign Key Constraint
 # Expected response
-# HTTP/1.1 204 NO_CONTENT, or 404 if staff not exists
+# HTTP/1.1 409 with error and message explaining the cause
 DELETE http://localhost:8080/api/staff/SL41

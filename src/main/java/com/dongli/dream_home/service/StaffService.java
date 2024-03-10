@@ -27,12 +27,19 @@ public class StaffService {
 
     public StaffResponse createStaffUsingProcedure(StaffRequest staffRequest) {
         Optional<Staff> optionalStaff = staffRepository.findById(staffRequest.getStaffNo());
-        if (optionalStaff.isPresent())
+        if (optionalStaff.isPresent()) { // In case the staff is already in the database
             throw new EntityExistsException("Staff " + staffRequest.getStaffNo() + " already exists.");
-        Staff savedStaff = staffRepository.hireStaff(mapToStaff(staffRequest));
-        StaffResponse staffResponse = mapToResponse(savedStaff);
-        log.info("Staff {} saved.", staffResponse.getStaffNo());
-        return staffResponse;
+        }
+        // execute the stored procedure
+        try {
+            Staff savedStaff = staffRepository.hireStaff(mapToStaff(staffRequest));
+            StaffResponse staffResponse = mapToResponse(savedStaff);
+            log.info("Staff {} saved.", staffResponse.getStaffNo());
+            return staffResponse;
+        } catch (DataIntegrityViolationException e) {
+            throw new ForeignKeyConstraintViolationException(
+                    "BranchNo " + staffRequest.getBranchNo() + " may not existed.");
+        }
     }
 
     public List<StaffResponse> getAllStaffs() {
@@ -56,7 +63,7 @@ public class StaffService {
         try {
             staffRepository.deleteById(staffResponse.getStaffNo());
             log.info("Staff {} deleted.", staffResponse.getStaffNo());
-        } catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException de) {
             throw new ForeignKeyConstraintViolationException(
                     "Cannot delete staff " + id + " due to existing related records");
         }
@@ -66,14 +73,21 @@ public class StaffService {
         StaffResponse staffResponse = findById(id);
         if (staffRequest.getStaffNo().equals(staffResponse.getStaffNo())) {
             Staff staffToUpdate = mapToStaff(staffRequest);
-            staffRepository.save(staffToUpdate);
+            // save data and handle foreign key BranchNo exception
+            try {
+                staffRepository.save(staffToUpdate);
+                log.info("Staff {} updated.", staffToUpdate.getStaffNo());
+            } catch (DataIntegrityViolationException e) {
+                throw new ForeignKeyConstraintViolationException(
+                        "BranchNo " + staffRequest.getBranchNo() + " may not existed.");
+            }
         } else {
             throw new InconsistentDataException(
-                    "Identifier StaffNo cannot be changed.");
+                    "StaffNo must be the same.");
         }
     }
 
-    private Staff mapToStaff(StaffRequest staffRequest) {
+    public Staff mapToStaff(StaffRequest staffRequest) {
         return Staff.builder()
                 .staffNo(staffRequest.getStaffNo())
                 .fName(staffRequest.getFName())
@@ -89,7 +103,7 @@ public class StaffService {
                 .build();
     }
 
-    private StaffResponse mapToResponse(Staff staff) {
+    public StaffResponse mapToResponse(Staff staff) {
         return StaffResponse.builder()
                 .staffNo(staff.getStaffNo())
                 .fName(staff.getFName())

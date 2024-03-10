@@ -24,7 +24,7 @@ public class StaffRepositoryTest {
     private StaffRepository mockStaffRepository;
 
     @Test
-    void testAddStaff() {
+    void testHireStaffProcedure() {
         Staff staff = new Staff("SW50", "Dongli", "Liu", "Manager", "M",
                 LocalDate.of(1990, 6, 16), 50000, "B007",
                 "123456789", "9876543210", "john.doe@example.com");
