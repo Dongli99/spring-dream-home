@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,16 +20,17 @@ import com.dongli.dream_home.repository.StaffRepository;
 @ExtendWith(MockitoExtension.class)
 public class StaffServiceTest {
 
+    private StaffRequest staffRequest;
+
     @Mock
     private StaffRepository staffRepository;
 
     @InjectMocks
     private StaffService staffService;
 
-    @Test
-    public void testCreateStaff() {
-        // Given
-        StaffRequest staffRequest = new StaffRequest();
+    @BeforeEach
+    void setUp() {
+        staffRequest = new StaffRequest();
         staffRequest.setStaffNo("S123");
         staffRequest.setFName("John");
         staffRequest.setLName("Doe");
@@ -40,7 +42,10 @@ public class StaffServiceTest {
         staffRequest.setTelephone("1234567890");
         staffRequest.setMobile("9876543210");
         staffRequest.setEmail("john.doe@example.com");
+    }
 
+    @Test
+    void testCreateStaff() {
         // Mock the behavior of staffRepository.hireStaff() to return a Staff object
         Staff savedStaff = new Staff("S123", "John", "Doe", "Manager", "Male",
                 LocalDate.of(1990, 1, 1), 50000, "B001",

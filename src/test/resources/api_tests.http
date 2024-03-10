@@ -1,4 +1,7 @@
-### POST /api/staff
+### Create a Staff
+# POST /api/staff
+# Expected response, HTTP/1.1 200 OK, with a list of staffs
+# If H 
 POST http://localhost:8080/api/staff
 Content-Type: application/json
 
@@ -15,3 +18,28 @@ Content-Type: application/json
     "mobile": "9876543210",
     "email": "john.doe@example.com"
 }
+
+### List All Staffs Endpoint Test
+# Expected response
+# HTTP/1.1 200 OK, with a list of staffs
+GET http://localhost:8080/api/staff
+
+### Get the Staff With the Specific ID
+# Expected response
+# HTTP/1.1 200 OK, with the staff matching the id
+GET http://localhost:8080/api/staff/SL41
+
+### Get Invalid Staff With A Invalid ID
+# Expected response
+# HTTP/1.1 404 NOT_FOUND, with timestamp and message
+GET http://localhost:8080/api/staff/SL415555
+
+### DELETE A Staff By ID With No Constraint
+# Expected response
+# HTTP/1.1 204 NO_CONTENT, or 404 if staff not exists
+DELETE http://localhost:8080/api/staff/S128
+
+### DELETE A Staff By ID With Foreign Key Constraint
+# Expected response
+# HTTP/1.1 204 NO_CONTENT, or 404 if staff not exists
+DELETE http://localhost:8080/api/staff/SL41
