@@ -8,7 +8,7 @@
 
 ## Overview
 
-A backend connecting to an Oracle Database including Procedure and Function using new-learned Spring Boot technology.
+The project entails the development of a backend application that connects to an *Oracle Database*, incorporating *procedures* and *functions*. Leveraging the power of *Spring Boot*, the application embraces modern development practices such as *Test-Driven Development* (TDD) and adherence to *CheckStyle* guidelines.
 
 ## Prerequisites
 
