@@ -3,6 +3,7 @@ package com.dongli.dream_home.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -19,20 +20,32 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class StaffService {
+
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
 
     private final StaffRepository staffRepository;
 
     public StaffResponse createStaffUsingProcedure(StaffRequest staffRequest) {
+        log.info("Active Profile: {}.", activeProfile);
+
         Optional<Staff> optionalStaff = staffRepository.findById(staffRequest.getStaffNo());
         if (optionalStaff.isPresent()) { // In case the staff is already in the database
             throw new EntityExistsException("Staff " + staffRequest.getStaffNo() + " already exists.");
         }
         // execute the stored procedure
         try {
-            Staff savedStaff = staffRepository.hireStaff(mapToStaff(staffRequest));
+            Staff savedStaff;
+            if (activeProfile.equals("H2")) {
+                // If using H2 database, use default saving approach.
+                savedStaff = staffRepository.save(mapToStaff(staffRequest));
+            } else {
+                // If Oracle is activated, use stored procedure.
+                savedStaff = staffRepository.hireStaff(mapToStaff(staffRequest));
+            }
             StaffResponse staffResponse = mapToResponse(savedStaff);
             log.info("Staff {} saved.", staffResponse.getStaffNo());
             return staffResponse;

@@ -17,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.env.Environment;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.dongli.dream_home.dto.StaffRequest;
 import com.dongli.dream_home.dto.StaffResponse;
@@ -47,6 +49,7 @@ public class StaffServiceTest {
 
     @Test
     void testCreateStaffUsingProcedure() {
+        ReflectionTestUtils.setField(staffService, "activeProfile", "oracle");
         when(staffRepository.hireStaff(any(Staff.class))).thenReturn(staff);
         staffService.createStaffUsingProcedure(staffRequest);
         verify(staffRepository).hireStaff(any(Staff.class));
