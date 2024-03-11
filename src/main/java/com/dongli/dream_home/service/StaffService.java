@@ -39,7 +39,7 @@ public class StaffService {
         // execute the stored procedure
         try {
             Staff savedStaff;
-            if (activeProfile.equals("H2")) {
+            if (activeProfile.equals("h2")) {
                 // If using H2 database, use default saving approach.
                 savedStaff = staffRepository.save(mapToStaff(staffRequest));
             } else {
