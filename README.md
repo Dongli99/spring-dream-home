@@ -8,7 +8,7 @@
 
 ## Overview
 
-A project connecting to an Oracle Database including Procedure and Function using new-learned Spring Boot technology.
+A backend connecting to an Oracle Database including Procedure and Function using new-learned Spring Boot technology.
 
 ## Prerequisites
 

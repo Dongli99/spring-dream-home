@@ -42,5 +42,5 @@ DELETE http://localhost:8080/api/staff/S128
 
 ### DELETE A Staff By ID With Foreign Key Constraint
 # Expected response
-# HTTP/1.1 409 with error and message explaining the cause
+# HTTP/1.1 409 with error and message explaining the cause 
 DELETE http://localhost:8080/api/staff/SL41

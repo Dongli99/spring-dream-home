@@ -178,14 +178,14 @@ class DreamHomeApplicationTests {
 	}
 
 	// A helper method cleanup the database for testing environment
+	// It enabled flexibility in performing testings to persistent Oracle Database
 	private void cleanupDatabase() {
 		try {
 			restTemplate.delete("/api/staff/SW50");
 		} catch (HttpClientErrorException e) {
 			// Ignore if the staff member does not exist
-			if (e.getStatusCode() != HttpStatus.NOT_FOUND) {
+			if (e.getStatusCode() != HttpStatus.NOT_FOUND)
 				throw e;
-			}
 		}
 	}
 }
