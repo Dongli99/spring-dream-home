@@ -36,16 +36,12 @@ public class StaffService {
         if (optionalStaff.isPresent()) { // In case the staff is already in the database
             throw new EntityExistsException("Staff " + staffRequest.getStaffNo() + " already exists.");
         }
-        // execute the stored procedure
+
         try {
-            Staff savedStaff;
-            if (activeProfile.equals("h2")) {
-                // If using H2 database, use default saving approach.
-                savedStaff = staffRepository.save(mapToStaff(staffRequest));
-            } else {
-                // If Oracle is activated, use stored procedure.
-                savedStaff = staffRepository.hireStaff(mapToStaff(staffRequest));
-            }
+            // If Oracle is active, execute the stored procedure
+            Staff savedStaff = activeProfile.equals("h2")
+                    ? staffRepository.save(mapToStaff(staffRequest))
+                    : staffRepository.hireStaff(mapToStaff(staffRequest));
             StaffResponse staffResponse = mapToResponse(savedStaff);
             log.info("Staff {} saved.", staffResponse.getStaffNo());
             return staffResponse;
