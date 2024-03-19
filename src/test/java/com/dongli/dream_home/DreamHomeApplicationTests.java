@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -35,11 +36,6 @@ class DreamHomeApplicationTests {
 
 	@Autowired
 	TestRestTemplate restTemplate;
-
-	@Bean
-	TestRestTemplate testRestTemplate() {
-		return new TestRestTemplate();
-	}
 
 	@BeforeEach
 	void setUp() {
