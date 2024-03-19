@@ -1,0 +1,4 @@
+### Get the Branch Address With the Specific ID
+# Expected response
+# HTTP/1.1 200 OK, with the address matching the id returned
+GET http://localhost:8080/api/branch/address/B002
