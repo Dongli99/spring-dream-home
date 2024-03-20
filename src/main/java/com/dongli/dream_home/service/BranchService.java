@@ -3,6 +3,7 @@ package com.dongli.dream_home.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.dongli.dream_home.dto.AddressResponse;
@@ -12,6 +13,7 @@ import com.dongli.dream_home.exception.EntityNotFoundException;
 import com.dongli.dream_home.model.Branch;
 import com.dongli.dream_home.repository.BranchRepository;
 
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +29,7 @@ public class BranchService {
 
     public AddressResponse findBranchAddressById(String branchNo) {
         if (branchNo == null)
-            throw new IllegalArgumentException("BranchNo can not be null.");
+            throw new IllegalArgumentException("BranchNo cannot be null.");
         Optional<Branch> optionalBranch = branchRepository.findById(branchNo);
         if (optionalBranch.isPresent()) {
             Branch branch = optionalBranch.get();
@@ -36,6 +38,26 @@ public class BranchService {
         } else {
             throw new EntityNotFoundException("Branch not exists.");
         }
+    }
+
+    public BranchResponse addNewBranch(BranchRequest branchRequest) {
+        log.info("Active Profile: {}.", activeProfile);
+        if (branchRequest.getBranchNo() == null)
+            throw new IllegalArgumentException("Branch No. cannot be null.");
+        Optional<Branch> optionalBranch = branchRepository.findById(branchRequest.getBranchNo());
+        if (optionalBranch.isPresent()) {
+            throw new EntityExistsException("Branch " + branchRequest.getBranchNo() + " already exists.");
+        }
+        if (activeProfile.equals("h2"))
+            branchRepository.save(mapToBranch(branchRequest));
+        else
+            branchRepository.newBranch(mapToBranch(branchRequest));
+        Optional<Branch> optionalSavedBranch = branchRepository.findById(branchRequest.getBranchNo());
+        if (!optionalSavedBranch.isPresent())
+            throw new EntityNotFoundException("Failed to save branch.");
+        BranchResponse response = mapToResponse(optionalSavedBranch.get());
+        log.info("Branch {} saved.", response.getBranchNo());
+        return response;
     }
 
     private Branch mapToBranch(BranchRequest branchRequest) {
@@ -63,4 +85,5 @@ public class BranchService {
                 .postCode(branch.getPostCode())
                 .build();
     }
+
 }

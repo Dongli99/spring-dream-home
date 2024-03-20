@@ -37,7 +37,7 @@ class StaffControllerTest {
 
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper;
+    private ObjectMapper mapper;
 
     private StaffRequest staffRequest;
     private StaffResponse staffResponse1;
@@ -52,8 +52,8 @@ class StaffControllerTest {
     @BeforeEach
     void setup() {
         // Enable LocalDate Json Serialization
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
+        mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
 
         mockMvc = MockMvcBuilders.standaloneSetup(staffController).build();
 
@@ -83,7 +83,7 @@ class StaffControllerTest {
         // When
         mockMvc.perform(post("/api/staff")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(staffRequest)))
+                .content(mapper.writeValueAsString(staffRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "http://localhost/api/staff/SW50"));
     }
@@ -132,16 +132,8 @@ class StaffControllerTest {
         // When
         mockMvc.perform(put("/api/staff/" + staffResponse1.getStaffNo())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(staffRequest)))
+                .content(mapper.writeValueAsString(staffRequest)))
                 .andExpect(status().isNoContent());
     }
 
-    // Helper method to convert objects to JSON string
-    private String asJsonString(final Object obj) {
-        try {
-            return objectMapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
