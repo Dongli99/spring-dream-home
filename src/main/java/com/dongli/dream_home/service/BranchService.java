@@ -3,12 +3,14 @@ package com.dongli.dream_home.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.dongli.dream_home.dto.AddressResponse;
 import com.dongli.dream_home.dto.BranchRequest;
 import com.dongli.dream_home.dto.BranchResponse;
 import com.dongli.dream_home.exception.EntityNotFoundException;
+import com.dongli.dream_home.exception.ForeignKeyConstraintViolationException;
 import com.dongli.dream_home.exception.InconsistentDataException;
 import com.dongli.dream_home.model.Branch;
 import com.dongli.dream_home.repository.BranchRepository;
@@ -77,6 +79,20 @@ public class BranchService {
         if (branchToUpdate == null)
             throw new EntityNotFoundException("Branch " + branchNo + " not exists.");
         branchRepository.save(mapToBranch(branchRequest));
+    }
+
+    public void deleteBranchById(String branchNo) {
+        // check existence
+        Branch existedBranch = findById(branchNo);
+        if (existedBranch == null)
+            throw new EntityNotFoundException("Branch " + branchNo + " is not found.");
+        // try to delete record
+        try {
+            branchRepository.deleteById(branchNo);
+        } catch (DataIntegrityViolationException e) {
+            throw new ForeignKeyConstraintViolationException(
+                    "Foreign key constraint: First delete staffs with BranchNo " + branchNo);
+        }
     }
 
     private Branch findById(String branchNo) {

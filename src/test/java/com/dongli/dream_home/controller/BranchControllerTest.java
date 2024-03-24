@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -106,6 +107,13 @@ public class BranchControllerTest {
                 mockMvc.perform(put("/api/branch/" + branchRequest.getBranchNo())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(branchRequest)))
+                                .andExpect(status().isNoContent());
+        }
+
+        @Test
+        void testDeleteBranch() throws Exception {
+                doNothing().when(branchService).deleteBranchById(anyString());
+                mockMvc.perform(delete("/api/branch/" + branchRequest.getBranchNo()))
                                 .andExpect(status().isNoContent());
         }
 }
