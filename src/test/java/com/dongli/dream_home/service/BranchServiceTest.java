@@ -59,6 +59,14 @@ public class BranchServiceTest {
     }
 
     @Test
+    void testFindBranchById() {
+        when(branchRepository.findById(anyString())).thenReturn(Optional.of(branch));
+        BranchResponse branchResponse = branchService.findBranchById("123");
+        assertNotNull(branchResponse);
+        assertThat(branchResponse.getCity()).isEqualTo(branch.getCity());
+    }
+
+    @Test
     void testFindBranchAddressById() {
         when(branchRepository.findById(anyString())).thenReturn(Optional.of(branch));
         AddressResponse addressResponse = branchService.findBranchAddressById("123");

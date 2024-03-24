@@ -26,6 +26,12 @@ public class BranchController {
 
     private final BranchService branchService;
 
+    @GetMapping("{id}")
+    public ResponseEntity<BranchResponse> searchBranchById(@PathVariable("id") String branchNo) {
+        BranchResponse branchResponse = branchService.findBranchById(branchNo);
+        return ResponseEntity.ok(branchResponse);
+    }
+
     @GetMapping("/address/{id}")
     public ResponseEntity<AddressResponse> searchAddressById(@PathVariable("id") String branchNo) {
         AddressResponse branchAddress = branchService.findBranchAddressById(branchNo);

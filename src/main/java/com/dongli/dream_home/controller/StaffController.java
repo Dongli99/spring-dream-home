@@ -49,8 +49,8 @@ public class StaffController {
 
     @GetMapping("{id}")
     public ResponseEntity<StaffResponse> findStaffById(@PathVariable String id) {
-        StaffResponse staff = staffService.findById(id);
-        return ResponseEntity.ok(staff);
+        StaffResponse staffResponse = staffService.findById(id);
+        return ResponseEntity.ok(staffResponse);
     }
 
     @DeleteMapping("{id}")

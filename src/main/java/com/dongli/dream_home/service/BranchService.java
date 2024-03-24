@@ -28,16 +28,17 @@ public class BranchService {
     private final BranchRepository branchRepository;
 
     public AddressResponse findBranchAddressById(String branchNo) {
-        if (branchNo == null)
-            throw new IllegalArgumentException("BranchNo cannot be null.");
-        Optional<Branch> optionalBranch = branchRepository.findById(branchNo);
-        if (optionalBranch.isPresent()) {
-            Branch branch = optionalBranch.get();
-            AddressResponse address = mapTAddressResponse(branch);
-            return address;
-        } else {
+        Branch existedBranch = findById(branchNo);
+        if (existedBranch == null)
             throw new EntityNotFoundException("Branch not exists.");
-        }
+        return mapTAddressResponse(existedBranch);
+    }
+
+    public BranchResponse findBranchById(String branchNo) {
+        Branch existedBranch = findById(branchNo);
+        if (existedBranch == null)
+            throw new EntityNotFoundException("Branch not exists.");
+        return mapToResponse(existedBranch);
     }
 
     public BranchResponse addNewBranch(BranchRequest branchRequest) {
@@ -45,20 +46,23 @@ public class BranchService {
             throw new IllegalArgumentException("Branch No. cannot be null.");
 
         // check existence before creation
-        Optional<Branch> optionalBranch = branchRepository.findById(branchRequest.getBranchNo());
-        if (optionalBranch.isPresent()) {
+        Branch existedBranch = findById(branchRequest.getBranchNo());
+        if (existedBranch != null)
             throw new EntityExistsException("Branch " + branchRequest.getBranchNo() + " already exists.");
-        }
-        if (activeProfile.equals("h2")) // avoid use procedure if H2 is used.
+
+        // decide whether to use procedure according to the profile
+        if (activeProfile.equals("h2"))
             branchRepository.save(mapToBranch(branchRequest));
         else
             branchRepository.newBranch(mapToBranch(branchRequest));
 
         // check existence after creation
-        Optional<Branch> optionalSavedBranch = branchRepository.findById(branchRequest.getBranchNo());
-        if (!optionalSavedBranch.isPresent())
+        Branch savedBranch = findById(branchRequest.getBranchNo());
+        if (savedBranch == null)
             throw new EntityNotFoundException("Failed to save branch.");
-        BranchResponse response = mapToResponse(optionalSavedBranch.get());
+
+        // return response
+        BranchResponse response = mapToResponse(savedBranch);
         log.info("Branch {} saved.", response.getBranchNo());
         return response;
     }
@@ -69,11 +73,23 @@ public class BranchService {
             throw new InconsistentDataException("BranchNo cannot be changed");
 
         // update if exists
-        Optional<Branch> branchToUpdate = branchRepository.findById(branchNo);
-        if (!branchToUpdate.isPresent())
+        Branch branchToUpdate = findById(branchNo);
+        if (branchToUpdate == null)
             throw new EntityNotFoundException("Branch " + branchNo + " not exists.");
-        Branch branch = mapToBranch(branchRequest);
-        branchRepository.save(branch);
+        branchRepository.save(mapToBranch(branchRequest));
+    }
+
+    private Branch findById(String branchNo) {
+        // a reusable method to support other methods in class.
+        if (branchNo == null)
+            throw new IllegalArgumentException("BranchNo cannot be null.");
+        Optional<Branch> optionalBranch = branchRepository.findById(branchNo);
+        if (optionalBranch.isPresent()) {
+            Branch branch = optionalBranch.get();
+            return branch;
+        } else {
+            return null;
+        }
     }
 
     private Branch mapToBranch(BranchRequest branchRequest) {

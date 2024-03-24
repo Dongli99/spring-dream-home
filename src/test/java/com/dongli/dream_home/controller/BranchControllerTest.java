@@ -27,8 +27,6 @@ import com.dongli.dream_home.dto.BranchResponse;
 import com.dongli.dream_home.service.BranchService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import oracle.security.o3logon.b;
-
 @ExtendWith(MockitoExtension.class)
 public class BranchControllerTest {
 
@@ -67,6 +65,15 @@ public class BranchControllerTest {
                                 .city("London")
                                 .postCode("NW10 6EU")
                                 .build();
+        }
+
+        @Test
+        void testSearchBranchById() throws Exception {
+                when(branchService.findBranchById(anyString())).thenReturn(branchResponse);
+                mockMvc.perform(get("/api/branch/" + branchRequest.getBranchNo()))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.postCode")
+                                                .value(addressResponse.getPostCode()));
         }
 
         @Test

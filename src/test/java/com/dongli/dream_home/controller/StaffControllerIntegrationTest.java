@@ -33,13 +33,13 @@ public class StaffControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        cleanupDatabase();
         // setup data
         staffRequest = new StaffRequest("SW50", "Dongli", "Liu",
                 "Manager", "M",
                 LocalDate.of(1990, 6, 16), 50000, "B003",
                 "123456789", "9876543210", "john.doe@example.com");
         // cleanup database
-        cleanupDatabase();
     }
 
     @AfterEach
