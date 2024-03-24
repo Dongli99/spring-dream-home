@@ -27,12 +27,33 @@ GET http://localhost:8080/api/staff
 ### Get the Staff With the Specific ID
 # Expected response
 # HTTP/1.1 200 OK, with the staff matching the id
-GET http://localhost:8080/api/staff/SL41
+GET http://localhost:8080/api/staff/S128
 
 ### Get Invalid Staff With A Invalid ID
 # Expected response
 # HTTP/1.1 404 NOT_FOUND, with timestamp and message
 GET http://localhost:8080/api/staff/SL415555
+
+### Update a staff
+# Expected response
+# HTTP/1.1 204 NO_CONTENT
+# Run POST http://localhost:8080/api/staff test (at the top) to ensure S128 exists
+PUT http://localhost:8080/api/staff/S128
+Content-Type: application/json
+
+{
+    "staffNo": "S128",
+    "fname": "John",
+    "lname": "Doe",
+    "position": "Manager",
+    "sex": "Male",
+    "dob": "1990-01-10",
+    "salary": 60000,
+    "branchNo": "B003",
+    "telephone": "1234567890",
+    "mobile": "9876543210",
+    "email": "john.doe@example.com"
+}
 
 ### DELETE A Staff By ID With No Constraint
 # Expected response
@@ -44,3 +65,4 @@ DELETE http://localhost:8080/api/staff/S128
 # Expected response
 # HTTP/1.1 409 with error and message explaining the cause 
 DELETE http://localhost:8080/api/staff/SL41
+

@@ -125,10 +125,10 @@ class StaffControllerTest {
     }
 
     @Test
+    @SuppressWarnings("null")
     void testUpdateStaff() throws Exception {
         // Mock the behavior of StaffService
         doNothing().when(staffService).updateById(any(String.class), any(StaffRequest.class));
-
         // When
         mockMvc.perform(put("/api/staff/" + staffResponse1.getStaffNo())
                 .contentType(MediaType.APPLICATION_JSON)

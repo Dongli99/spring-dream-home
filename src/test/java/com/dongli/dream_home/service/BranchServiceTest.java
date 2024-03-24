@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -78,7 +81,7 @@ public class BranchServiceTest {
     }
 
     @Test
-    void testAddNewBranchExistingBranch() {
+    void testAddNewBranchWhenTheBranchExists() {
         BranchRequest branchRequest = new BranchRequest();
         branchRequest.setBranchNo("B002");
         branchRequest.setCity("London");
@@ -89,5 +92,14 @@ public class BranchServiceTest {
             branchService.addNewBranch(branchRequest);
         });
         assertEquals("Branch B002 already exists.", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateById() {
+        String branchNo = branchRequest.getBranchNo();
+        when(branchRepository.findById(branchNo)).thenReturn(Optional.of(branch));
+        branchService.updateById(branchNo, branchRequest);
+        verify(branchRepository).findById(branchNo);
+        verify(branchRepository, times(1)).save(branch);
     }
 }

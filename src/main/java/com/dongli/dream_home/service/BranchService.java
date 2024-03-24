@@ -3,13 +3,13 @@ package com.dongli.dream_home.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.dongli.dream_home.dto.AddressResponse;
 import com.dongli.dream_home.dto.BranchRequest;
 import com.dongli.dream_home.dto.BranchResponse;
 import com.dongli.dream_home.exception.EntityNotFoundException;
+import com.dongli.dream_home.exception.InconsistentDataException;
 import com.dongli.dream_home.model.Branch;
 import com.dongli.dream_home.repository.BranchRepository;
 
@@ -41,23 +41,39 @@ public class BranchService {
     }
 
     public BranchResponse addNewBranch(BranchRequest branchRequest) {
-        log.info("Active Profile: {}.", activeProfile);
         if (branchRequest.getBranchNo() == null)
             throw new IllegalArgumentException("Branch No. cannot be null.");
+
+        // check existence before creation
         Optional<Branch> optionalBranch = branchRepository.findById(branchRequest.getBranchNo());
         if (optionalBranch.isPresent()) {
             throw new EntityExistsException("Branch " + branchRequest.getBranchNo() + " already exists.");
         }
-        if (activeProfile.equals("h2"))
+        if (activeProfile.equals("h2")) // avoid use procedure if H2 is used.
             branchRepository.save(mapToBranch(branchRequest));
         else
             branchRepository.newBranch(mapToBranch(branchRequest));
+
+        // check existence after creation
         Optional<Branch> optionalSavedBranch = branchRepository.findById(branchRequest.getBranchNo());
         if (!optionalSavedBranch.isPresent())
             throw new EntityNotFoundException("Failed to save branch.");
         BranchResponse response = mapToResponse(optionalSavedBranch.get());
         log.info("Branch {} saved.", response.getBranchNo());
         return response;
+    }
+
+    public void updateById(String branchNo, BranchRequest branchRequest) {
+        // check consistence
+        if (!branchNo.equals(branchRequest.getBranchNo()))
+            throw new InconsistentDataException("BranchNo cannot be changed");
+
+        // update if exists
+        Optional<Branch> branchToUpdate = branchRepository.findById(branchNo);
+        if (!branchToUpdate.isPresent())
+            throw new EntityNotFoundException("Branch " + branchNo + " not exists.");
+        Branch branch = mapToBranch(branchRequest);
+        branchRepository.save(branch);
     }
 
     private Branch mapToBranch(BranchRequest branchRequest) {
@@ -85,5 +101,4 @@ public class BranchService {
                 .postCode(branch.getPostCode())
                 .build();
     }
-
 }
