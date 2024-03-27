@@ -24,6 +24,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.dongli.dream_home.dto.AddressResponse;
 import com.dongli.dream_home.dto.BranchRequest;
 import com.dongli.dream_home.dto.BranchResponse;
+import com.dongli.dream_home.exception.EntityNotFoundException;
 import com.dongli.dream_home.model.Branch;
 import com.dongli.dream_home.repository.BranchRepository;
 
@@ -109,5 +110,28 @@ public class BranchServiceTest {
         branchService.updateById(branchNo, branchRequest);
         verify(branchRepository).findById(branchNo);
         verify(branchRepository, times(1)).save(branch);
+    }
+
+    @Test
+    void testDeleteBranchByIdWhenIdExists() {
+        String branchNo = branchRequest.getBranchNo();
+        when(branchRepository.findById(branchNo)).thenReturn(Optional.of(branch));
+        branchService.deleteBranchById(branchNo);
+        verify(branchRepository).findById(branchNo);
+        verify(branchRepository, times(1)).deleteById(branchNo);
+    }
+
+    @Test
+    void testDeleteBranchByIdWhenIdNotExists() {
+        String branchNo = branchRequest.getBranchNo();
+        when(branchRepository.findById(branchNo))
+                .thenReturn(Optional.of(branch))
+                .thenReturn(Optional.empty());
+        branchService.updateById(branchNo, branchRequest);
+        verify(branchRepository).findById(branchNo);
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            branchService.deleteBranchById(branchNo);
+        });
+        assertEquals("Branch " + branchNo + " is not found.", exception.getMessage());
     }
 }

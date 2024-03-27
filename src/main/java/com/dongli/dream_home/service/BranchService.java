@@ -1,5 +1,6 @@
 package com.dongli.dream_home.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +34,7 @@ public class BranchService {
         Branch existedBranch = findById(branchNo);
         if (existedBranch == null)
             throw new EntityNotFoundException("Branch not exists.");
-        return mapTAddressResponse(existedBranch);
+        return mapToAddressResponse(existedBranch);
     }
 
     public BranchResponse findBranchById(String branchNo) {
@@ -89,6 +90,7 @@ public class BranchService {
         // try to delete record
         try {
             branchRepository.deleteById(branchNo);
+            log.info("Branch {} is deleted.", branchNo);
         } catch (DataIntegrityViolationException e) {
             throw new ForeignKeyConstraintViolationException(
                     "Foreign key constraint: First delete staffs with BranchNo " + branchNo);
@@ -106,6 +108,11 @@ public class BranchService {
         } else {
             return null;
         }
+    }
+
+    public List<BranchResponse> findAll() {
+        List<Branch> branches = branchRepository.findAll();
+        return branches.stream().map(branch -> mapToResponse(branch)).toList();
     }
 
     private Branch mapToBranch(BranchRequest branchRequest) {
@@ -126,7 +133,7 @@ public class BranchService {
                 .build();
     }
 
-    private AddressResponse mapTAddressResponse(Branch branch) {
+    private AddressResponse mapToAddressResponse(Branch branch) {
         return AddressResponse.builder()
                 .city(branch.getCity())
                 .street(branch.getStreet())

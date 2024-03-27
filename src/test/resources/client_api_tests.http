@@ -1,0 +1,17 @@
+### Add a client
+# Expected response
+# HTTP/1.1 201 Created, with the address matching the id returned
+POST http://localhost:8080/api/client
+Content-Type: application/json
+
+{
+    "clientNo": "T123",
+    "firstName": "John",
+    "lastName": "Doe",
+    "telNo": "123456789",
+    "street": "123 Main St",
+    "city": "New York",
+    "email": "john.doe@example.com",
+    "prefType": "Type",
+    "maxRent": 1000
+}

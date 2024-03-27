@@ -1,6 +1,7 @@
 package com.dongli.dream_home.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,4 +65,11 @@ public class BranchController {
         branchService.deleteBranchById(branchNo);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping
+    public ResponseEntity<List<BranchResponse>> listAllBranch() {
+        List<BranchResponse> branchResponses = branchService.findAll();
+        return ResponseEntity.ok(branchResponses);
+    }
+
 }

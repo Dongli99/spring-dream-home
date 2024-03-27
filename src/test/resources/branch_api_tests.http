@@ -16,6 +16,11 @@ Content-Type: application/json
 # HTTP/1.1 200 OK, with the address matching the id returned
 GET http://localhost:8080/api/branch/address/B888
 
+### Get the Branch info With the Specific ID
+# Expected response
+# HTTP/1.1 200 OK, with the branch matching the id returned
+GET http://localhost:8080/api/branch/B888
+
 ### Update a branch
 # Expected response
 # HTTP/1.1 204 No Content
@@ -28,3 +33,9 @@ Content-Type: application/json
     "city": "Victoria",
     "postCode": "M3M V0V"
 }
+
+### Delete a branch
+# Expected response
+# HTTP/1.1 204 No Content
+# If NOT FOUND, run POST test at the top
+DELETE http://localhost:8080/api/branch/B888

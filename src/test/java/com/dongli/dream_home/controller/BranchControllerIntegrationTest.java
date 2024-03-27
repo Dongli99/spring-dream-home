@@ -1,7 +1,7 @@
 package com.dongli.dream_home.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.dongli.dream_home.dto.BranchRequest;
-import com.dongli.dream_home.dto.StaffRequest;
+import com.dongli.dream_home.dto.BranchResponse;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
@@ -126,12 +126,24 @@ public class BranchControllerIntegrationTest {
 
     @Test
     void shouldNotUpdateANotExistingBranch() {
-
+        // update and check existence
+        branchRequest.setCity("Winnipeg");
+        ResponseEntity<Void> updateResponse = restTemplate
+                .exchange("/api/branch/" + branchRequest.getBranchNo(),
+                        HttpMethod.PUT, httpRequest, Void.class);
+        assertThat(updateResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
-    void shouldNotUpdateABranchIfIdIsModified() {
-
+    void shouldReturnAListOfBranch() {
+        // create data
+        restTemplate.postForEntity("/api/branch", branchRequest, Void.class);
+        ResponseEntity<String> getResponse = restTemplate
+                .getForEntity("/api/branch", String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+        List<BranchResponse> branchResponse = documentContext.read("$");
+        assertThat(branchResponse.size()).isGreaterThanOrEqualTo(1);
     }
 
     private void cleanupDatabase() {
