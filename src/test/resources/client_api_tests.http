@@ -1,4 +1,4 @@
-### Add a client
+### Add a Client
 # Expected response
 # HTTP/1.1 201 Created, with the address matching the id returned
 POST http://localhost:8080/api/client
@@ -8,8 +8,32 @@ Content-Type: application/json
     "clientNo": "T123",
     "firstName": "John",
     "lastName": "Doe",
-    "telNo": "123456789",
+    "telephoneNo": "123 6789",
     "street": "123 Main St",
+    "city": "New York",
+    "email": "john.doe@example.com",
+    "prefType": "Type",
+    "maxRent": 1000
+}
+
+
+### Get the Client info With the Specific ID
+# Expected response
+# HTTP/1.1 200 OK, with the branch matching the id returned
+GET http://localhost:8080/api/client/T123 
+
+### Update a Client
+# Expected response
+# HTTP/1.1 201 Created, with the address matching the id returned
+PUT http://localhost:8080/api/client/T123
+Content-Type: application/json
+
+{
+    "clientNo": "T123",
+    "firstName": "John",
+    "lastName": "Doe",
+    "telephoneNo": "123 6789",
+    "street": "456 Main St",
     "city": "New York",
     "email": "john.doe@example.com",
     "prefType": "Type",

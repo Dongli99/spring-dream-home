@@ -6,11 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.dongli.dream_home.dto.ClientRequest;
 import com.dongli.dream_home.dto.ClientResponse;
+import com.dongli.dream_home.exception.InconsistentDataException;
 import com.dongli.dream_home.model.Client;
 import com.dongli.dream_home.repository.ClientRepository;
+import com.dongli.dream_home.exception.EntityNotFoundException;
 
 import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,6 +48,29 @@ public class ClientService {
         // return client response
         ClientResponse clientResponse = mapToResponse(client);
         return clientResponse;
+    }
+
+    public void updateClient(String clientNo, ClientRequest clientRequest) {
+        // check existence before update
+        Client existedClient = findById(clientNo);
+        if (existedClient == null)
+            throw new EntityNotFoundException(
+                    "Client " + clientNo + " already exists.");
+        // check consistency
+        if (!clientNo.equals(clientRequest.getClientNo()))
+            throw new InconsistentDataException("Client No cannot be modified.");
+        // update client
+        Client clientToUpdate = mapToClient(clientRequest);
+        clientRepository.save(clientToUpdate);
+        log.info("Client {} is updated.", clientNo);
+    }
+
+    public void deleteClient(String clientNo) {
+        Client client = findById(clientNo);
+        if (client == null)
+            throw new EntityNotFoundException("Client " + clientNo + " not exists.");
+        clientRepository.delete(client);
+        log.info("Client {} is updated.", client.getClientNo());
     }
 
     private Client findById(String clientNo) {
@@ -86,4 +110,5 @@ public class ClientService {
                 .telephoneNo(client.getTelephoneNo())
                 .build();
     }
+
 }
