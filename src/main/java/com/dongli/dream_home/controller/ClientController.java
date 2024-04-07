@@ -1,8 +1,11 @@
 package com.dongli.dream_home.controller;
 
 import java.net.URI;
+import java.util.List;
 
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,7 @@ import com.dongli.dream_home.service.ClientService;
 
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/client")
 @RequiredArgsConstructor
@@ -36,6 +40,12 @@ public class ClientController {
                 .buildAndExpand(clientResponse.getClientNo())
                 .toUri();
         return ResponseEntity.created(locationOfNewClient).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ClientResponse>> ListAllClient() {
+        List<ClientResponse> clientResponses = clientService.listAll();
+        return ResponseEntity.ok(clientResponses);
     }
 
     @GetMapping("{id}")

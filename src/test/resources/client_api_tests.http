@@ -22,6 +22,13 @@ Content-Type: application/json
 # HTTP/1.1 200 OK, with the branch matching the id returned
 GET http://localhost:8080/api/client/T123 
 
+
+### Get all Clients
+# Expected response
+# HTTP/1.1 200 OK, with a list of clients returned
+GET http://localhost:8080/api/client
+
+
 ### Update a Client
 # Expected response
 # HTTP/1.1 201 Created, with the address matching the id returned

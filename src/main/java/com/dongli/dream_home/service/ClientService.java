@@ -1,5 +1,6 @@
 package com.dongli.dream_home.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -71,6 +72,11 @@ public class ClientService {
             throw new EntityNotFoundException("Client " + clientNo + " not exists.");
         clientRepository.delete(client);
         log.info("Client {} is updated.", client.getClientNo());
+    }
+
+    public List<ClientResponse> listAll() {
+        List<Client> clients = clientRepository.findAll();
+        return clients.stream().map(this::mapToResponse).toList();
     }
 
     private Client findById(String clientNo) {

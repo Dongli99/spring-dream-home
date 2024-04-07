@@ -64,4 +64,3 @@ DELETE http://localhost:8080/api/staff/S128
 # Expected response
 # HTTP/1.1 409 with error and message explaining the cause 
 DELETE http://localhost:8080/api/staff/SL41
-
