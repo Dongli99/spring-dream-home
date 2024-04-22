@@ -10,6 +10,8 @@
 
 The project entails the development of a backend application that connects to an *Oracle Database*, incorporating *procedures* and *functions*. Leveraging the power of *Spring Boot*, the application embraces modern development practices such as *Test-Driven Development* (TDD) and adherence to *CheckStyle* guidelines.
 
+> Note: A corresponding frontend has been created at [react-dream-home](https://github.com/Dongli99/REACT-dream-home.git)
+
 ## Prerequisites
 
 - Java Development Kit (JDK)
